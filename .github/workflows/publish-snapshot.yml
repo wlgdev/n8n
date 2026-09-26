@@ -73,7 +73,6 @@ jobs:
             ${{ github.event.repository.name }}:n8n:5678
           env:
             N8N_VERSION=2.40.5
-            N8N_PORT=5678
             N8N_PROTOCOL=https
             N8N_HOST=n8n.dev.${{ vars.N8N_HOST_NAME }}
             N8N_EDITOR_BASE_URL=https://n8n.dev.${{ vars.N8N_HOST_NAME }}
