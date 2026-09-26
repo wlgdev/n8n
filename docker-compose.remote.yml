@@ -1,12 +1,4 @@
 services:
-  nginx:
-    image: ${SERVICE_IMAGE_NAME}${SERVICE_IMAGE_TAG:+:${SERVICE_IMAGE_TAG}}${SERVICE_IMAGE_DIGEST:+@${SERVICE_IMAGE_DIGEST}}
-    ports:
-      - "80:80"
-    restart: unless-stopped
-    environment:
-      - TZ=Europe/Moscow
-      - FOO=${FOO}
   n8n:
     image: n8nio/n8n:${N8N_VERSION:-2.40.5}
     pull_policy: missing
