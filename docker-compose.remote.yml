@@ -1,6 +1,6 @@
 services:
   n8n:
-    image: n8nio/n8n:${N8N_VERSION:-2.40.5}
+    image: ghcr.io/n8n-io/n8n:2.40.7
     pull_policy: missing
     restart: unless-stopped
 
@@ -88,7 +88,7 @@ services:
       start_period: 30s
 
   runner:
-    image: n8nio/runners:${N8N_VERSION:-2.40.5}
+    image: ghcr.io/n8n-io/runners:2.40.7
     pull_policy: missing
     restart: unless-stopped
 
