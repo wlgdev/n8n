@@ -7,52 +7,51 @@ services:
     user: "1000:1000"
 
     environment:
-      # Timezone
       GENERIC_TIMEZONE: "${GENERIC_TIMEZONE:-Europe/Moscow}"
       TZ: "${TZ:-Europe/Moscow}"
 
       # Execution data cleanup
+      EXECUTION_MODE: "regular"
       EXECUTIONS_DATA_PRUNE: "true"
       EXECUTIONS_DATA_MAX_AGE: "168"
-      EXECUTIONS_DATA_PRUNE_MAX_COUNT: "10000"
-      EXECUTION_MODE: "regular"
+      EXECUTIONS_DATA_PRUNE_MAX_COUNT: "1000"
+      EXECUTIONS_DATA_SAVE_ON_ERROR: "all"
+      EXECUTIONS_DATA_SAVE_ON_SUCCESS: "all"
+      EXECUTIONS_DATA_SAVE_ON_PROGRESS: "false"
+      EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS: "false"
+      EXECUTIONS_DATA_HARD_DELETE_BUFFER: "1"
+      EXECUTIONS_DATA_PRUNE_SOFT_DELETE_INTERVAL: "60"
+      EXECUTIONS_DATA_PRUNE_HARD_DELETE_INTERVAL: "15"
 
-      # n8n
-      N8N_DIAGNOSTICS_ENABLED: "false"
+      # basic settings
       N8N_HOST: "${N8N_HOST}"
       N8N_PROTOCOL: "${N8N_PROTOCOL:-https}"
       N8N_EDITOR_BASE_URL: "${N8N_EDITOR_BASE_URL}"
-      WEBHOOK_URL: "${WEBHOOK_URL}"
+      N8N_WEBHOOK_URL: "${WEBHOOK_URL}"
       N8N_SECURE_COOKIE: "${N8N_SECURE_COOKIE:-true}"
       N8N_PROXY_HOPS: "${N8N_PROXY_HOPS:-2}"
-
       N8N_LISTEN_ADDRESS: "0.0.0.0"
       N8N_PORT: "5678"
 
+      # security/permissions
       N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
-      N8N_GRACEFUL_SHUTDOWN_TIMEOUT: "30"
+      N8N_DIAGNOSTICS_ENABLED: "false"
 
-      # Task runners
-      #
-      # N8N_RUNNERS_ENABLED is deprecated in newer n8n versions,
-      # so N8N_RUNNERS_MODE=external is the important setting.
-      N8N_RUNNERS_ENABLED: "true"
+      # task runners
       N8N_RUNNERS_MODE: "external"
-      N8N_RUNNERS_AUTH_TOKEN: "${N8N_RUNNERS_AUTH_TOKEN}"
-
-      # IMPORTANT:
-      # runner is a separate Compose container, therefore the broker
-      # cannot listen only on 127.0.0.1.
       N8N_RUNNERS_BROKER_LISTEN_ADDRESS: "0.0.0.0"
       N8N_RUNNERS_BROKER_PORT: "5679"
 
-      # SQLite
+      # graceful shutdown
+      N8N_GRACEFUL_SHUTDOWN_TIMEOUT: "30"
+
+      # database
       DB_TYPE: "sqlite"
       DB_SQLITE_POOL_SIZE: "2"
 
-      # Encryption
+      # tokens
+      N8N_RUNNERS_AUTH_TOKEN: "${N8N_RUNNERS_AUTH_TOKEN}"
       N8N_ENCRYPTION_KEY: "${N8N_ENCRYPTION_KEY}"
-
     ports:
       - "5678:5678"
 
@@ -95,16 +94,15 @@ services:
     user: "1000:1000"
 
     environment:
-      N8N_RUNNERS_AUTH_TOKEN: "${N8N_RUNNERS_AUTH_TOKEN}"
-
       # In Kubernetes these 127.0.0.1 because both containers
       # belonged to the same Pod.
       #
       # In Compose, use the n8n service name.
       N8N_RUNNERS_TASK_BROKER_URI: "http://n8n:5679"
-
       N8N_RUNNERS_LAUNCHER_HEALTH_CHECK_PORT: "5680"
 
+      # tokens
+      N8N_RUNNERS_AUTH_TOKEN: "${N8N_RUNNERS_AUTH_TOKEN}"
     security_opt:
       - no-new-privileges:true
 
